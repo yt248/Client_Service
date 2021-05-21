@@ -1,4 +1,4 @@
-package com.eugene.spring.boot.rest.api.client_service.model.entity;
+package com.eugene.spring.boot.rest.api.client_service.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class Client {
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH,
-            CascadeType.DETACH})
+            CascadeType.DETACH}, orphanRemoval = true)
     private List<Order> orderList = new ArrayList<>();
 
     /**
@@ -33,27 +33,11 @@ public class Client {
     }
 
     /**
-     * Конструток с параметрами
+     * Конструктор с параметрами
      */
     public Client(String name, String surname) {
         this.name = name;
         this.surname = surname;
-    }
-
-    /**
-     * Добавление записи заказов у клиента
-     */
-    public void addOrderToClient(Order order) {
-        order.setClient(this);
-        orderList.add(order);
-    }
-
-    /**
-     * Удаление записи закза у клиента
-     */
-    public void deleteOrderToClient(Order order) {
-        orderList.remove(order);
-        order.setClient(null);
     }
 
     public int getId() {

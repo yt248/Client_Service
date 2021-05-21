@@ -1,4 +1,4 @@
-package com.eugene.spring.boot.rest.api.client_service.model.exception;
+package com.eugene.spring.boot.rest.api.client_service.exception;
 
 import java.text.MessageFormat;
 

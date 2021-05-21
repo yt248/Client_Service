@@ -1,4 +1,4 @@
-package com.eugene.spring.boot.rest.api.client_service.model.entity;
+package com.eugene.spring.boot.rest.api.client_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

@@ -1,15 +1,13 @@
 package com.eugene.spring.boot.rest.api.client_service.contoller;
 
-import com.eugene.spring.boot.rest.api.client_service.model.dto.OrderDto;
-import com.eugene.spring.boot.rest.api.client_service.model.dto.mappers.OrderMappers;
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Order;
+import com.eugene.spring.boot.rest.api.client_service.dto.OrderDto;
+import com.eugene.spring.boot.rest.api.client_service.dto.mappers.OrderMappers;
+import com.eugene.spring.boot.rest.api.client_service.entity.Order;
 import com.eugene.spring.boot.rest.api.client_service.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,5 +36,11 @@ public class OrderController {
         List<OrderDto> orderDtoList = orderList.stream().map(OrderMappers::toDto).collect(Collectors.toList());
         return new ResponseEntity<>(orderDtoList, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public Order getOrder(@PathVariable int id) {
+        return orderService.readOrderById(id);
+    }
+
 
 }

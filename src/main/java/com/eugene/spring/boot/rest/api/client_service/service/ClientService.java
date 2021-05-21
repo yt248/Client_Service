@@ -1,19 +1,17 @@
 package com.eugene.spring.boot.rest.api.client_service.service;
 
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Client;
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Order;
+import com.eugene.spring.boot.rest.api.client_service.entity.Client;
+import com.eugene.spring.boot.rest.api.client_service.entity.Order;
 
 import java.util.List;
 
 public interface ClientService {
-
-
     /**
      * Создает нового клиента
-     *
      * @param client - клиент для создания
+     * @return созданного клиента
      */
-     void createClient(Client client);
+    Client createClient(Client client);
 
     /**
      * Возвращает клиента по его ID
@@ -21,7 +19,7 @@ public interface ClientService {
      * @param id - ID клиента
      * @return - объект клиента с заданным ID
      */
-     Client readClientById(int id);
+    Client readClientById(int id);
 
 
     /**
@@ -29,19 +27,19 @@ public interface ClientService {
      * в соответствии с переданным клиентом
      *
      * @param id     - id клиента которого нужно обновить
-     * @param client - клиент в соответсвии с которым нужно обновить данные
-     * @return - true если данные были обновлены, иначе false
+     * @param updateClient - клиент в соответствии с которым нужно обновить данные
      */
-     boolean updateClient(int id, Client client);
+    void updateClient(int id, Client updateClient);
 
 
     /**
      * Удаляет клиента с заданным ID
      *
      * @param id - id клиента, которого нужно удалить
-     * @return - true если клиент был удален, иначе false
+     *           return - Ничего, если все клиента удален,
+     *           если нет то сообщение Could not find client with id: - клиента которого пытаются удалить.
      */
-     Client deleteClient(int id);
+    void deleteClient(int id);
 
 
     /**
@@ -49,7 +47,7 @@ public interface ClientService {
      *
      * @return список клиентов
      */
-     List<Client> getAllClients();
+    List<Client> getAllClients();
 
 
     /**
@@ -57,18 +55,17 @@ public interface ClientService {
      *
      * @param idClient - id клиента у которого нужно удалить запись
      * @param idOrder  - id запили которую нужно удалить
-     * @return true если клиент был удален, иначе false
      */
-     boolean deleteOneOrderByIdClient(int idClient, int idOrder);
+    void deleteOneOrderByIdClient(int idClient, int idOrder);
 
     /**
      * Выдавать единичные записи заказа у клиента
      *
      * @param idClient - id клина у которого нужно взять запись
      * @param idOrder  - id записи которую нужно получить
-     * @return обьект записи если она удачно получена, иначе null
+     * @return объект записи если она удачно получена, иначе null
      */
-     Order getOneOrderByIdClient(int idClient, int idOrder);
+    Order getOneOrderByIdClient(int idClient, int idOrder);
 
     /**
      * Обновлять единичные записи заказа у клиента
@@ -76,17 +73,15 @@ public interface ClientService {
      * @param idClient    - id клина у которого нужно взять запись
      * @param idOrder     - id записи которую нужно обновить
      * @param orderUpdate - обьект для обновление записи
-     * @return обновленный обьект если запись уданоч обновлена, иначе null
+     * @return обновленный объект если запись удачно обновлена, иначе null
      */
-     Order updateOneOrderByIdClient(int idClient, int idOrder, Order orderUpdate);
+    Order updateOneOrderByIdClient(int idClient, int idOrder, Order orderUpdate);
 
     /**
      * Создавать записи заказаов у клинета
      *
      * @param idClient - id клиента у которого будет создана запись
-     * @param order    - запись в соотвествии с которой нужно создать новую
+     * @param order    - запись в соответствии с которой нужно создать новую
      */
-     void creatOrderByIdClient(int idClient, Order order);
+    void creatOrderByIdClient(int idClient, Order order);
 }
-
-//        выдавать список всех заказов по клиенту

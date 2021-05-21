@@ -1,4 +1,4 @@
-package com.eugene.spring.boot.rest.api.client_service.model.dto;
+package com.eugene.spring.boot.rest.api.client_service.dto;
 
 public class OrderDto {
 

@@ -1,7 +1,7 @@
-package com.eugene.spring.boot.rest.api.client_service.model.dto.mappers;
+package com.eugene.spring.boot.rest.api.client_service.dto.mappers;
 
-import com.eugene.spring.boot.rest.api.client_service.model.dto.ClientDto;
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Client;
+import com.eugene.spring.boot.rest.api.client_service.dto.ClientDto;
+import com.eugene.spring.boot.rest.api.client_service.entity.Client;
 
 public class ClientMapper {
 

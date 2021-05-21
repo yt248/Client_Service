@@ -1,7 +1,7 @@
-package com.eugene.spring.boot.rest.api.client_service.model.dto.mappers;
+package com.eugene.spring.boot.rest.api.client_service.dto.mappers;
 
-import com.eugene.spring.boot.rest.api.client_service.model.dto.OrderDto;
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Order;
+import com.eugene.spring.boot.rest.api.client_service.dto.OrderDto;
+import com.eugene.spring.boot.rest.api.client_service.entity.Order;
 
 public class OrderMappers {
 

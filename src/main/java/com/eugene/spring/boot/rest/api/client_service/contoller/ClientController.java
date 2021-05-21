@@ -1,11 +1,11 @@
 package com.eugene.spring.boot.rest.api.client_service.contoller;
 
-import com.eugene.spring.boot.rest.api.client_service.model.dto.ClientDto;
-import com.eugene.spring.boot.rest.api.client_service.model.dto.OrderDto;
-import com.eugene.spring.boot.rest.api.client_service.model.dto.mappers.ClientMapper;
-import com.eugene.spring.boot.rest.api.client_service.model.dto.mappers.OrderMappers;
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Client;
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Order;
+import com.eugene.spring.boot.rest.api.client_service.dto.ClientDto;
+import com.eugene.spring.boot.rest.api.client_service.dto.OrderDto;
+import com.eugene.spring.boot.rest.api.client_service.dto.mappers.ClientMapper;
+import com.eugene.spring.boot.rest.api.client_service.dto.mappers.OrderMappers;
+import com.eugene.spring.boot.rest.api.client_service.entity.Client;
+import com.eugene.spring.boot.rest.api.client_service.entity.Order;
 import com.eugene.spring.boot.rest.api.client_service.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,9 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    //------------------------------Создание клинета---------------------------------
+    /**
+     * Создание клиента
+     */
     @PostMapping(value = "/")
     @ResponseStatus(HttpStatus.CREATED)
     public ClientDto create(@RequestBody ClientDto clientDto) {
@@ -33,22 +35,27 @@ public class ClientController {
         return clientDto;
     }
 
-    //------------------------------Получение всех клиентов---------------------------------
+    /**
+     * Получение всех клиентов
+     */
     @GetMapping("/")
     public List<ClientDto> getAllClients() {
         List<Client> clients = clientService.getAllClients();
-        List<ClientDto> clientDtoList = clients.stream().map(ClientMapper::toDto).collect(Collectors.toList());
-        return clientDtoList;
+        return clients.stream().map(ClientMapper::toDto).collect(Collectors.toList());
     }
 
-    //-------------------------------Получение клинета по ID--------------------------------
+    /**
+     * Получение клиента по ID
+     */
     @GetMapping("/{id}")
     public ClientDto getClientById(@PathVariable("id") int id) {
         Client client = clientService.readClientById(id);
         return ClientMapper.toDto(client);
     }
 
-    //--------------------------------Получить список всех заказов по клиенту-------------------------------
+    /**
+     * Получить список всех заказов по клиенту
+     */
     @GetMapping("/{id}/orders")
     public List<Order> getAllOrdersByIdClient(@PathVariable("id") int id) {
         Client client = clientService.readClientById(id);
@@ -56,28 +63,35 @@ public class ClientController {
     }
 
 
-    //--------------------------------Обновление клинета по ID-------------------------------
+    /**
+     * Обновление клиента по ID
+     */
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ClientDto updateClientById(@PathVariable("id") int id, @RequestBody ClientDto clientDto) {
         clientService.updateClient(id, ClientMapper.toEntity(clientDto));
         return clientDto;
     }
 
-    //--------------------------------Удаление клинета по ID-------------------------------
+    /**
+     * Удаление клиента по ID
+     */
     @DeleteMapping("/{id}")
     public void deleteClientById(@PathVariable("id") int id) {
         clientService.deleteClient(id);
     }
 
-    //--------------------------------Удаление единичной записи заказа у клинета по ID-------------
+    /**
+     * Удаление единичной записи заказа у клиента по ID
+     */
     @DeleteMapping("/{idClient}/orders/{idOrder}")
     public void deleteOneOrderByIdClient(@PathVariable("idClient") int idClient, @PathVariable("idOrder") int idOrder) {
         clientService.deleteOneOrderByIdClient(idClient, idOrder);
     }
 
 
-    //--------------------------------Выдать единичный заказа у клинета по ID-------------
+    /**
+     * Выдать единичный заказа у клиента по ID
+     */
     @GetMapping("/{idClient}/orders/{idOrder}")
     public OrderDto getOneOrderByIdClient(@PathVariable("idClient") int idClient, @PathVariable("idOrder") int idOrder) {
         return OrderMappers.toDto(clientService.getOneOrderByIdClient(idClient, idOrder));
@@ -85,13 +99,14 @@ public class ClientController {
 
     //--------------------------------Обновить единичный заказа у клинета по ID-------------
     @PutMapping("/{idClient}/orders/{idOrder}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public OrderDto updateOneOrderByIdClient(@PathVariable("idClient") int idClient, @PathVariable("idOrder") int idOrder,
                                              @RequestBody Order updateOrder) {
         return OrderMappers.toDto(clientService.updateOneOrderByIdClient(idClient, idOrder, updateOrder));
     }
 
-    //--------------------------------Создать заказа у клинета по ID-------------
+    /**
+     * Создать заказа у клиента по ID
+     */
     @PostMapping("/{idClient}/orders/")
     @ResponseStatus(HttpStatus.CREATED)
     public void creatOrderByIdClient(@PathVariable("idClient") int idClient, @RequestBody OrderDto orderDto) {

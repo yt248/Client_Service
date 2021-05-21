@@ -1,12 +1,13 @@
 package com.eugene.spring.boot.rest.api.client_service.service;
 
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Order;
-import com.eugene.spring.boot.rest.api.client_service.model.exception.OrderNotFoundException;
+import com.eugene.spring.boot.rest.api.client_service.entity.Order;
+import com.eugene.spring.boot.rest.api.client_service.exception.OrderNotFoundException;
 import com.eugene.spring.boot.rest.api.client_service.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -19,46 +20,35 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void createOrder(Order order) {
+    public Order createOrder(Order order) {
         orderRepository.save(order);
+        return order;
     }
 
     @Override
     public Order readOrderById(int id) {
-//        Optional<Order> optional = orderRepository.findById(id);
-//        Order order = new Order();
-//        if (optional.isPresent())
-//            order = optional.get();
-//
-//        return order;
-
-        return orderRepository.findById(id).orElseThrow(()->
+        return orderRepository.findById(id).orElseThrow(() ->
                 new OrderNotFoundException(id));
     }
 
     @Override
-    public boolean updateOrder(int id, Order order) {
-        if (orderRepository.existsById(id)) {
-            order.setNumberOrder(id);
+    public void updateOrder(int id, Order updateOrder) {
+        Order order = null;
+        Optional<Order> optional = orderRepository.findById(id);
+        if (optional.isPresent()) {
+            order = optional.get();
+            order.setDescription(updateOrder.getDescription());
+            order.setSum(updateOrder.getSum());
             orderRepository.save(order);
-
-            return true;
         }
-        return false;
+
     }
 
-    @Override
-    public Order deleteOrder(int id) {
-//        Optional<Order> optional = orderRepository.findById(id);
-//        if (optional.isPresent()) {
-//            orderRepository.delete(optional.get());
-//            return true;
-//        }
-//        return false;
 
+    @Override
+    public void deleteOrder(int id) {
         Order order = readOrderById(id);
         orderRepository.delete(order);
-        return order;
     }
 
     @Override

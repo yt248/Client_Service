@@ -1,6 +1,6 @@
-package com.eugene.spring.boot.rest.api.client_service.model.dto;
+package com.eugene.spring.boot.rest.api.client_service.dto;
 
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Order;
+import com.eugene.spring.boot.rest.api.client_service.entity.Order;
 
 import java.util.ArrayList;
 import java.util.List;

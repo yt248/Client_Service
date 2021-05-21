@@ -1,8 +1,8 @@
 package com.eugene.spring.boot.rest.api.client_service.service;
 
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Client;
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Order;
-import com.eugene.spring.boot.rest.api.client_service.model.exception.ClientNotFoundException;
+import com.eugene.spring.boot.rest.api.client_service.entity.Client;
+import com.eugene.spring.boot.rest.api.client_service.entity.Order;
+import com.eugene.spring.boot.rest.api.client_service.exception.ClientNotFoundException;
 import com.eugene.spring.boot.rest.api.client_service.repository.ClientRepository;
 import com.eugene.spring.boot.rest.api.client_service.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -24,98 +25,77 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void createClient(Client client) {
+    public Client createClient(Client client) {
         clientRepository.save(client);
+        return client;
     }
 
     @Override
     public Client readClientById(int id) {
-//        Optional<Client> optionalClient = clientRepository.findById(id);
-//        Client client = new Client();
-//        if (optionalClient.isPresent())
-//            client = optionalClient.get();
-//        return client;
-
-        return clientRepository.findById(id).orElseThrow(()->
+        return clientRepository.findById(id).orElseThrow(() ->
                 new ClientNotFoundException(id));
     }
 
     @Override
     @Transactional
-    public boolean updateClient(int id, Client client) {
-        if (clientRepository.existsById(id)) {
-            client.setId(id);
+    public void updateClient(int id, Client updateClient) {
+//        if (clientRepository.existsById(id)) {
+//            client.setId(id);
+//            clientRepository.save(client);
+//        }
+
+        Client client = null;
+        Optional<Client> optional = clientRepository.findById(id);
+        if (optional.isPresent()) {
+            client = optional.get();
+            client.setName(updateClient.getName());
+            client.setSurname(updateClient.getSurname());
             clientRepository.save(client);
-            return true;
         }
-        return false;
     }
 
     @Override
-    public Client deleteClient(int id) {
-//        if (clientRepository.existsById(id)) {
-//            Client client = readClientById(id);
-//            clientRepository.delete(client);
-//            return true;
-//        }
-//        return false;
+    public void deleteClient(int id) {
         Client client = readClientById(id);
         clientRepository.delete(client);
-
-        return client;
     }
 
     @Override
     @Transactional
-    public boolean deleteOneOrderByIdClient(int idClient, int idOrder) {
-        if (clientRepository.existsById(idClient)) {
-            Client client = readClientById(idClient);
-            Order order = orderRepository.getOne(idOrder);
-            client.deleteOrderToClient(order);
-            return true;
-        }
-        return false;
+    public void deleteOneOrderByIdClient(int idClient, int idOrder) {
+        Client client = readClientById(idClient);
+        Order order = orderRepository.getOneOrderByIdClient(idOrder, client);
+        orderRepository.delete(order);
     }
 
 
     @Override
     @Transactional
     public Order getOneOrderByIdClient(int idClient, int idOrder) {
-        if (clientRepository.existsById(idClient)) {
-            Client client = readClientById(idClient);
-            for (Order order : client.getOrderList()) {
-                if (order.getNumberOrder() == idOrder)
-                    return order;
-            }
-        }
-        return null;
+        Client client = readClientById(idClient);
+        return orderRepository.getOneOrderByIdClient(idOrder, client);
     }
+
 
     @Override
     @Transactional
     public Order updateOneOrderByIdClient(int idClient, int idOrder, Order orderUpdate) {
-        if (clientRepository.existsById(idClient)) {
-            Client client = readClientById(idClient);
-            Order order = null;
-            for (Order or : client.getOrderList()) {
-                if (or.getNumberOrder() == idOrder)
-                    order = or;
-            }
-            order.setDescription(orderUpdate.getDescription());
-            order.setSum(orderUpdate.getSum());
-            return orderUpdate;
-        }
-        return null;
+        Client client = readClientById(idClient);
+        Order oneOrderByIdClient = orderRepository.getOneOrderByIdClient(idOrder, client);
+        oneOrderByIdClient.setDescription(orderUpdate.getDescription());
+        oneOrderByIdClient.setSum(orderUpdate.getSum());
+//        orderRepository.save(oneOrderByIdClient);
+
+        return oneOrderByIdClient;
+
     }
 
     @Override
     @Transactional
     public void creatOrderByIdClient(int idClient, Order order) {
-        if(clientRepository.existsById(idClient)){
-            Client client = readClientById(idClient);
-            client.addOrderToClient(order);
-        }
-
+        Client client = readClientById(idClient);
+        order.setClient(client);
+        orderRepository.save(order);
     }
 
 

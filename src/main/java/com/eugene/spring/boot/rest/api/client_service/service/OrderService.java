@@ -1,6 +1,6 @@
 package com.eugene.spring.boot.rest.api.client_service.service;
 
-import com.eugene.spring.boot.rest.api.client_service.model.entity.Order;
+import com.eugene.spring.boot.rest.api.client_service.entity.Order;
 
 import java.util.List;
 
@@ -11,8 +11,9 @@ public interface OrderService {
      * Создает нового заказа
      *
      * @param order - заказ для создания
+     * @return созданный заказ
      */
-     void createOrder(Order order);
+     Order createOrder(Order order);
 
     /**
      * Возвращает заказа по его ID
@@ -28,19 +29,17 @@ public interface OrderService {
      * в соответствии с переданным клиентом
      *
      * @param id     - id заказа которого нужно обновить
-     * @param order - заказ в соответсвии с которым нужно обновить данные
-     * @return - true если данные были обновлены, иначе false
+     * @param updateOrder - заказ в соответствии с которым нужно обновить данные
      */
-     boolean updateOrder(int id, Order order);
+     void updateOrder(int id, Order updateOrder);
 
 
     /**
      * Удаляет клиента с заданным ID
      *
      * @param id - id заказа, которого нужно удалить
-     * @return - true если заказ был удален, иначе false
      */
-     Order deleteOrder(int id);
+     void deleteOrder(int id);
 
 
     /**
