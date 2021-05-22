@@ -26,8 +26,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client createClient(Client client) {
-        clientRepository.save(client);
-        return client;
+         return clientRepository.save(client);
+
     }
 
     @Override
@@ -44,14 +44,20 @@ public class ClientServiceImpl implements ClientService {
 //            clientRepository.save(client);
 //        }
 
-        Client client = null;
-        Optional<Client> optional = clientRepository.findById(id);
-        if (optional.isPresent()) {
-            client = optional.get();
-            client.setName(updateClient.getName());
-            client.setSurname(updateClient.getSurname());
-            clientRepository.save(client);
-        }
+//        Client client = null;
+//        Optional<Client> optional = clientRepository.findById(id);
+//        if (optional.isPresent()) {
+//            client = optional.get();
+//            client.setName(updateClient.getName());
+//            client.setSurname(updateClient.getSurname());
+//            clientRepository.save(client);
+//        }
+
+        clientRepository.findById(id).ifPresent(client1 -> {
+            client1.setName(updateClient.getName());
+            client1.setSurname(updateClient.getSurname());
+            clientRepository.save(client1);
+        });
     }
 
     @Override
